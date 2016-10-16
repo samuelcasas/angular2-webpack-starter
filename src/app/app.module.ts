@@ -31,6 +31,10 @@ type StoreType = {
   disposeOldHosts: () => void
 };
 
+// Here are located all the components generated, do not erase this comments
+// App Components
+// END App Components
+
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
@@ -41,7 +45,7 @@ type StoreType = {
     AboutComponent,
     HomeComponent,
     NoContentComponent,
-    XLarge
+    XLarge,
   ],
   imports: [ // import Angular's modules
     BrowserModule,
