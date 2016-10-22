@@ -14,15 +14,31 @@ import { ROUTES } from './app.routes';
 import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
-import { HomeComponent } from './home';
-import { AboutComponent } from './about';
-import { NoContentComponent } from './no-content';
-import { XLarge } from './home/x-large';
+import { NoContent } from "./components/_shared/no-content/no-content";
+import { Navbar } from "./components/_shared/navbar/navbar.component";
+import { LockerModule, Locker, LockerConfig, DRIVERS } from 'angular2-locker'
+import { provideAuth } from 'angular2-jwt';
+import { UserService } from "./services/user.service";
+import { AlreadyLoggedInGuard } from "./guards/already-logged-in.guard";
+import { LoggedInGuard } from "./guards/logged-in.guard";
+import { LoginFormComponent } from "./components/login-form/login-form.component";
+
+let lockerConfig = new LockerConfig('mxp',DRIVERS.LOCAL, '-');
 
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
-  AppState
+  AppState,
+  UserService,
+  AlreadyLoggedInGuard,
+  LoggedInGuard,
+  provideAuth({
+    headerPrefix: 'Bearer',
+    tokenGetter: ()=> new Locker(lockerConfig).get('token') ,
+    globalHeaders: [{'Content-Type':'application/json'}],
+    noJwtError: true,
+    noTokenScheme: true
+  })
 ];
 
 type StoreType = {
@@ -33,6 +49,7 @@ type StoreType = {
 
 // Here are located all the components generated, do not erase this comments
 // App Components
+import { HomeComponent } from "./components/home";
 // END App Components
 
 /**
@@ -42,16 +59,17 @@ type StoreType = {
   bootstrap: [ AppComponent ],
   declarations: [
     AppComponent,
-    AboutComponent,
+    NoContent,
+    LoginFormComponent,
+    Navbar,
     HomeComponent,
-    NoContentComponent,
-    XLarge,
   ],
   imports: [ // import Angular's modules
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(ROUTES, { useHash: true })
+    RouterModule.forRoot(ROUTES, { useHash: true }),
+    LockerModule.forRoot(lockerConfig),
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,

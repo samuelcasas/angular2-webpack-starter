@@ -1,0 +1,8 @@
+<form (submit)="login()" class="form-signin">
+  <h2 class="form-signin-heading">Please sign in</h2>
+  <label for="inputEmail" class="sr-only">Email address</label>
+  <input type="email" name="username" class="form-control" [(ngModel)]="user.name" placeholder="Email address" required autofocus>
+  <label for="inputPassword" class="sr-only">Password</label>
+  <input type="password" name="password" class="form-control" [(ngModel)]="user.password" placeholder="Password" required>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+</form>

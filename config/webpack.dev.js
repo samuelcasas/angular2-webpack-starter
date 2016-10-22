@@ -2,6 +2,9 @@
  * @author: @AngularClass
  */
 
+require('dotenv').config();
+
+
 const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge'); // used to merge webpack configs
 const commonConfig = require('./webpack.common.js'); // the settings that are common to prod and dev
@@ -18,12 +21,21 @@ const NamedModulesPlugin = require('webpack/lib/NamedModulesPlugin');
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 3000;
+
+const API_URL = process.env.API_URL;
+const LOGIN_SECRET = process.env.LOGIN_SECRET;
+const LOGIN_ID = process.env.LOGIN_ID;
+
+
 const HMR = helpers.hasProcessFlag('hot');
 const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   host: HOST,
   port: PORT,
   ENV: ENV,
-  HMR: HMR
+  HMR: HMR,
+  API_URL : API_URL.replace(/\/$/, ""),
+  LOGIN_SECRET : LOGIN_SECRET,
+  LOGIN_ID : LOGIN_ID
 });
 
 /**
@@ -116,6 +128,9 @@ module.exports = function(options) {
           'ENV': JSON.stringify(METADATA.ENV),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
           'HMR': METADATA.HMR,
+          'API_URL' : JSON.stringify(METADATA.API_URL),
+          'LOGIN_SECRET' : JSON.stringify(METADATA.LOGIN_SECRET),
+          'LOGIN_ID' : JSON.stringify(METADATA.LOGIN_ID)
         }
       }),
 
