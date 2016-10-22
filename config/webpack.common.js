@@ -14,7 +14,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const HtmlElementsPlugin = require('./html-elements-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
-const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin'); 
+const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
 /*
  * Webpack Constants
@@ -77,7 +77,7 @@ module.exports = function(options) {
        *
        * See: http://webpack.github.io/docs/configuration.html#resolve-extensions
        */
-      extensions: ['', '.ts', '.js', '.json'],
+      extensions: ['', '.ts', '.js', '.scss', '.json'],
 
       // An array of directory names to be resolved to the current directory
       modules: [helpers.root('src'), 'node_modules'],
@@ -157,6 +157,16 @@ module.exports = function(options) {
           loaders: ['to-string-loader', 'css-loader']
         },
 
+        /*
+         * raw loader and css loader support for *.css files
+         * Returns file content as string
+         *
+         */
+        {
+          test: /\.scss$/,
+          loaders: ['raw-loader', 'sass-loader']
+        },
+
         /* Raw loader support for *.html
          * Returns file content as string
          *
@@ -223,7 +233,7 @@ module.exports = function(options) {
       /**
        * Plugin: ContextReplacementPlugin
        * Description: Provides context to Angular's use of System.import
-       * 
+       *
        * See: https://webpack.github.io/docs/list-of-plugins.html#contextreplacementplugin
        * See: https://github.com/angular/angular/issues/11580
        */
@@ -242,6 +252,11 @@ module.exports = function(options) {
        * See: https://www.npmjs.com/package/copy-webpack-plugin
        */
       new CopyWebpackPlugin([{
+        from: 'node_modules/bootstrap-sass/assets/fonts',
+        to: 'assets/fonts'
+      }]),
+
+      new CopyWebpackPlugin([{
         from: 'src/assets',
         to: 'assets'
       }], {
@@ -250,10 +265,10 @@ module.exports = function(options) {
           'robots.txt'
         ]
       }),
-      new CopyWebpackPlugin([{ 
+      new CopyWebpackPlugin([{
         from: 'src/assets/robots.txt'
-      }, { 
-        from: 'src/assets/humans.txt' 
+      }, {
+        from: 'src/assets/humans.txt'
       }]),
 
       /*
