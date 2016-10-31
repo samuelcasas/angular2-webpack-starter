@@ -13,19 +13,16 @@ import { AppState } from './app.service';
   selector: 'app',
   encapsulation: ViewEncapsulation.None,
   styleUrls: [
-    'app.component.scss'
+    './app.component.scss'
   ],
   template: `
-    <navbar></navbar>
-    
-    <div class="container">
-      <router-outlet></router-outlet>
-    </div>`
+      <navbar></navbar>
+      
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>`
 })
 export class AppComponent {
-  angularclassLogo = 'assets/img/angularclass-avatar.png';
-  name = 'Angular 2 Webpack Starter';
-  url = 'https://twitter.com/AngularClass';
 
   constructor(
     public appState: AppState) {

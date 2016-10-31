@@ -25,6 +25,9 @@ import { LoginFormComponent } from "./components/login-form/login-form.component
 
 let lockerConfig = new LockerConfig('mxp',DRIVERS.LOCAL, '-');
 
+const APP_MODULES = [
+];
+
 // Application wide providers
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS,
@@ -70,6 +73,7 @@ import { HomeComponent } from "./components/home";
     HttpModule,
     RouterModule.forRoot(ROUTES, { useHash: true }),
     LockerModule.forRoot(lockerConfig),
+    APP_MODULES,
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
